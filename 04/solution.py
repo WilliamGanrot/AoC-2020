@@ -4,34 +4,41 @@ def hasAllFlags(fields):
     flags = [x[0] for x in fields]
     return all(x in flags for x in requiredFields)
 
-def validateFlag(fields):
-    for field in fields:
-        
+def validateFlags(fields):
+    for field in fields:        
         flag, value = field[0], field[1]
 
         if flag == 'byr':
-            return value.isdigit() and len(value) == 4 and int(value) >= 1920 and int(value) <= 2020
+            if not (value.isdigit() and len(value) == 4 and int(value) >= 1920 and int(value) <= 2020):
+                return False
         elif flag == 'iyr':
-            return value.isdigit() and len(value) == 4 and int(value) >= 2010 and int(value) <= 2020
+            if not (value.isdigit() and len(value) == 4 and int(value) >= 2010 and int(value) <= 2020):
+                return False
         elif flag == 'eyr':
-            return value.isdigit() and len(value) == 4 and int(value) >= 2020 and int(value) <= 2030
+            if not (value.isdigit() and len(value) == 4 and int(value) >= 2020 and int(value) <= 2030):
+                return False
         elif flag == 'hgt':
             if value.endswith('cm'):
                 h = int(value[:-len('cm')])
-                return h >= 150 and h <= 193 
-            elif value.endswith('inc'): 
-                h = int(value[:-len('cm')])
-                return h >= 59 and h <= 76
+                if not (h >= 150 and h <= 193 ):
+                    return False
+            elif value.endswith('in'): 
+                h = int(value[:-len('in')])
+                if not (h >= 59 and h <= 76):
+                    return False
             else:  
                 return False
         elif flag == 'hcl':
-            return value[0] == '#' and len(value[1:]) == 6 and re.compile("[a-f0-9]+").fullmatch(value[1:]) != None
+            if not (value[0] == '#' and len(value[1:]) == 6 and re.compile("[a-f0-9]+").fullmatch(value[1:]) != None):
+                return False
         elif flag == 'ecl':
-            return value in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
+            if not (value in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']):
+                return False
         elif flag == 'pid':
-            return value[0] == 0 and len(value) == 9
+            if not (value.isdigit() and len(value) == 9):
+                return False
         elif flag == 'cid':
-            return True
+            pass
            
     return True   
 
@@ -50,8 +57,9 @@ def part2(rows):
     for passport in rows:
         fields = [field.split(':') for field in passport]
        
-        if hasAllFlags(fields) and validateFlag(fields):
+        if hasAllFlags(fields) and validateFlags(fields):
             validPassports += 1
+
     return validPassports
 
 rows = []
@@ -61,4 +69,5 @@ with open('input.txt') as f:
     rows = f.read().split('\n\n')
     rows = [row.replace('\n', ' ').split(' ') for row in rows]
  
-print(part2(rows))
+print("part1: " + str(part1(rows)))
+print("part2: " + str(part2(rows)))
