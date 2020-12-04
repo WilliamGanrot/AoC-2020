@@ -31,3 +31,4 @@ for pair in passwordWithPolicy:
         result.append(password)
 
 print("Part2: " + str(len(result)))
+
