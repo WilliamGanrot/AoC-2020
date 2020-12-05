@@ -7,9 +7,10 @@ def hasAllFlags(fields):
 def validateFlags(fields):
     for field in fields:        
         flag, value = field[0], field[1]
+        print(field)
 
         if flag == 'byr':
-            if not (value.isdigit() and len(value) == 4 and int(value) >= 1920 and int(value) <= 2020):
+            if not (value.isdigit() and len(value) == 4 and int(value) >= 1920 and int(value) <= 2002):
                 return False
         elif flag == 'iyr':
             if not (value.isdigit() and len(value) == 4 and int(value) >= 2010 and int(value) <= 2020):
@@ -18,16 +19,8 @@ def validateFlags(fields):
             if not (value.isdigit() and len(value) == 4 and int(value) >= 2020 and int(value) <= 2030):
                 return False
         elif flag == 'hgt':
-            if value.endswith('cm'):
-                h = int(value[:-len('cm')])
-                if not (h >= 150 and h <= 193 ):
-                    return False
-            elif value.endswith('in'): 
-                h = int(value[:-len('in')])
-                if not (h >= 59 and h <= 76):
-                    return False
-            else:  
-                return False
+            if not (value[:-2].isdigit() and ((value[-2:] == "cm" and 150 <= int(value[:-2]) <= 193) or(value[-2:] == "in" and 59 <= int(value[:-2]) <= 76))):
+                return False       
         elif flag == 'hcl':
             if not (value[0] == '#' and len(value[1:]) == 6 and re.compile("[a-f0-9]+").fullmatch(value[1:]) != None):
                 return False
@@ -56,7 +49,7 @@ def part2(rows):
     validPassports = 0
     for passport in rows:
         fields = [field.split(':') for field in passport]
-       
+
         if hasAllFlags(fields) and validateFlags(fields):
             validPassports += 1
 
