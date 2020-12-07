@@ -26,19 +26,6 @@ def part1():
             c += 1
     return c
 
-
-
-
-def count_contained(src):
-	tot = 0
-	for rule in ruleMap[src]:
-        
-		tot = int(tot) +  int(rule[0]) * (1 + count_contained(rule[1]))
-
-	return tot
-
-
-
 def part2(color):
     t = 0
 
