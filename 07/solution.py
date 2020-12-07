@@ -27,16 +27,25 @@ def part1():
     return c
 
 
-def x(color):
-    if not ruleMap[color]:
-        return 1
-    else:
-        return sum([int(number)*x(bag) for number, bag in ruleMap[color]]) + 1 
 
-    return 
-def part2():
-    #print(getGoldBagHiarchy('shiny gold bag'))
-    print(x('shiny gold bag'))
 
-#print("part1: " + str(part1()))
-str(part2())
+def count_contained(src):
+	tot = 0
+	for rule in ruleMap[src]:
+        
+		tot = int(tot) +  int(rule[0]) * (1 + count_contained(rule[1]))
+
+	return tot
+
+
+
+def part2(color):
+    t = 0
+
+    for rule in ruleMap[color]:
+        t = int(t) + int(rule[0]) * (1 + part2(rule[1]))
+
+    return t
+
+print("part1: " + str(part1()))
+print("part2: " + str(part2('shiny gold bag')))
