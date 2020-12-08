@@ -26,6 +26,8 @@ def part1():
             c += 1
     return c
 
+
+
 def part2(color):
     t = 0
 
